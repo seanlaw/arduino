@@ -1,3 +1,6 @@
+
+//#include <SoftwareSerial.h>
+
 //Center RGB LED, PWM capable
 #define INTLEDR 12  // red channel
 #define INTLEDG 13  // green channel
@@ -10,9 +13,13 @@
 #define INTLED4 19  //
 #define INTLED5 20  // Right most
 
+//SoftwareSerial xBee(10, 11);  //RX, TX
 
 void setup() {
   // put your setup code here, to run once:
+  //xBee.begin(9600);
+  //xBee.println("Hello, Jooeun?");
+
   pinMode(INTLEDR, OUTPUT);
   pinMode(INTLEDG, OUTPUT);
   
