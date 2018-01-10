@@ -1,70 +1,74 @@
+#include <SoftwareSerial.h>
+#include "PinMapping.h"
+// XBee's DOUT (TX) is connected to pin 10 (Arduino's Software RX)
+// XBee's DIN (RX) is connected to pin 11 (Arduino's Software TX)
+SoftwareSerial XBee(RX, TX); // RX, TX
 
-//#include <SoftwareSerial.h>
+float baseLuxReading;
+int waveCount;
 
-//Center RGB LED, PWM capable
-#define INTLEDR 12  // red channel
-#define INTLEDG 13  // green channel
-
-//White bar-graph LEDs
-#define INTLED0 15  // Left most
-#define INTLED1 16  //
-#define INTLED2 17  //
-#define INTLED3 18  //
-#define INTLED4 19  //
-#define INTLED5 20  // Right most
-
-//SoftwareSerial xBee(10, 11);  //RX, TX
-
-void setup() {
-  // put your setup code here, to run once:
-  //xBee.begin(9600);
-  //xBee.println("Hello, Jooeun?");
-
-  pinMode(INTLEDR, OUTPUT);
+void setup(){
+  // Set up both ports at 9600 baud. This value is most important
+  // for the XBee. Make sure the baud rate matches the config
+  // setting of your XBee.
+  XBee.begin(9600);
+  Serial.begin(9600);
+  pinMode(24, OUTPUT);
   pinMode(INTLEDG, OUTPUT);
-  
   pinMode(INTLED0, OUTPUT);
   pinMode(INTLED1, OUTPUT);
   pinMode(INTLED2, OUTPUT);
   pinMode(INTLED3, OUTPUT);
   pinMode(INTLED4, OUTPUT);
   pinMode(INTLED5, OUTPUT);
-}
+  pinMode(LUXPIN, INPUT);
 
-void loop() {
-  // put your main code here, to run repeatedly:
-  active();
-  success(3);
-  fail(2);
-}
-
-void success( int blinks ){
-  for (int i=1; i<=blinks; i++){
-    digitalWrite(INTLEDG, HIGH);
-    delay(200);
-    digitalWrite(INTLEDG, LOW);
-    delay(200);
-  }
-  delay(5000);
-}
-
-void fail( int blinks ){
-  for (int i=1; i<=blinks; i++){
-    digitalWrite(INTLEDR, HIGH);
-    delay(200);
-    digitalWrite(INTLEDR, LOW);
-    delay(200);
-  }
-  delay(5000);
-}
-
-void active( void ){
   digitalWrite(INTLED0, HIGH);
   digitalWrite(INTLED1, HIGH);
   digitalWrite(INTLED2, HIGH);
   digitalWrite(INTLED3, HIGH);
   digitalWrite(INTLED4, HIGH);
   digitalWrite(INTLED5, HIGH);
+
+  baseLuxReading = analogRead(LUXPIN);
 }
 
+void blink(int n){
+  for (int i=0; i<n; i++){
+    digitalWrite(INTLEDG, HIGH);
+    delay(200);
+    digitalWrite(INTLEDG, LOW);
+    delay(200);
+  }
+
+}
+
+void loop(){
+  checkWaves();
+  //Serial.write(luxReading);
+  if (Serial.available())
+  { // If data comes in from serial monitor, send it out to XBee
+    XBee.write(Serial.read());
+  }
+  if (XBee.available())
+  { // If data comes in from XBee, send it out to serial monitor
+    Serial.write(XBee.read());
+
+    
+    blink(3);
+  }
+}
+
+void checkWaves(){
+  float luxReading = analogRead(LUXPIN);
+  if (luxReading < baseLuxReading/4.0){
+    waveCount++;
+    delay(500);
+  }
+  if (waveCount >= 2){
+    blink(3);
+    delay(500);
+    waveCount=0;
+  }
+}
 

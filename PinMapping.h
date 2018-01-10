@@ -9,6 +9,9 @@
 #define INTLEDG 5 // Pin 13
 #define INTLEDB 13 // Pin 14
 
+#define LUXPIN 24 // Pin A2
+#define BTNPIN 
+
 #define RX 8  
 #define TX 19
 
