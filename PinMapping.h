@@ -15,8 +15,8 @@
 #define RX 8  
 #define TX 19
 
-#define SDA11 3 
-#define SCL10 2 
+#define SDA11 3 // Also an interrupt Pin?
+#define SCL10 2 // Also an interrupt Pin?
 
 #define A7 6 
 #define A4 8 
