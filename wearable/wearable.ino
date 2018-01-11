@@ -34,6 +34,14 @@ void setup(){
 }
 
 void loop(){
+  if (XBee.available()){
+    while(XBee.available()){
+      char c = XBee.read();
+    }
+    bounceLEDs(4, 50);
+    blink(4);
+    setAllLEDs(HIGH);
+  }
   checkWaves(0.5, true);
   /*
   if (Serial.available())
@@ -68,8 +76,8 @@ void checkWaves(float lightPercentage, bool reset){
     delay(400);
   }
   if (waveCount == 2){
-    bounceLEDs(5, 50);
-    blink(4);
+    XBee.write("T");
+    bounceLEDs(4, 50);
     setAllLEDs(HIGH);
     delay(1000);
     if (reset == true){
