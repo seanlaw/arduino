@@ -53,8 +53,10 @@ void loop(){
 void blink(int n){
   for (int i=0; i<n; i++){
     digitalWrite(INTLEDG, HIGH);
+    setAllLEDs(HIGH);
     delay(200);
     digitalWrite(INTLEDG, LOW);
+    setAllLEDs(LOW);
     delay(200);
   }
 }
@@ -66,8 +68,9 @@ void checkWaves(float lightPercentage, bool reset){
     delay(400);
   }
   if (waveCount == 2){
-    cycleLEDs(3, 200);
+    bounceLEDs(5, 50);
     blink(4);
+    setAllLEDs(HIGH);
     delay(1000);
     if (reset == true){
       waveCount=0;
@@ -78,16 +81,51 @@ void checkWaves(float lightPercentage, bool reset){
   }
 }
 
-void cycleLEDs(int n, int wait){
+void bounceLEDs(int n, int wait){
   for (int i=0; i< n; i++){
     digitalWrite(INTLED0, LOW);
     digitalWrite(INTLED1, LOW);
     digitalWrite(INTLED2, LOW);
     digitalWrite(INTLED3, LOW);
     digitalWrite(INTLED4, LOW);
+    digitalWrite(INTLED5, HIGH);
+    delay(wait);
+    digitalWrite(INTLED0, LOW);
+    digitalWrite(INTLED1, LOW);
+    digitalWrite(INTLED2, LOW);
+    digitalWrite(INTLED3, LOW);
+    digitalWrite(INTLED4, HIGH);
+    digitalWrite(INTLED5, LOW);
+    delay(wait);
+    digitalWrite(INTLED0, LOW);
+    digitalWrite(INTLED1, LOW);
+    digitalWrite(INTLED2, LOW);
+    digitalWrite(INTLED3, HIGH);
+    digitalWrite(INTLED4, LOW);
+    digitalWrite(INTLED5, LOW);
+    delay(wait);
+    digitalWrite(INTLED0, LOW);
+    digitalWrite(INTLED1, LOW);
+    digitalWrite(INTLED2, HIGH);
+    digitalWrite(INTLED3, LOW);
+    digitalWrite(INTLED4, LOW);
+    digitalWrite(INTLED5, LOW);
+    delay(wait);
+    digitalWrite(INTLED0, LOW);
+    digitalWrite(INTLED1, HIGH);
+    digitalWrite(INTLED2, LOW);
+    digitalWrite(INTLED3, LOW);
+    digitalWrite(INTLED4, LOW);
     digitalWrite(INTLED5, LOW);
     delay(wait);
     digitalWrite(INTLED0, HIGH);
+    digitalWrite(INTLED1, LOW);
+    digitalWrite(INTLED2, LOW);
+    digitalWrite(INTLED3, LOW);
+    digitalWrite(INTLED4, LOW);
+    digitalWrite(INTLED5, LOW);
+    delay(wait);
+    digitalWrite(INTLED0, LOW);
     digitalWrite(INTLED1, HIGH);
     digitalWrite(INTLED2, LOW);
     digitalWrite(INTLED3, LOW);
@@ -97,6 +135,13 @@ void cycleLEDs(int n, int wait){
     digitalWrite(INTLED0, LOW);
     digitalWrite(INTLED1, LOW);
     digitalWrite(INTLED2, HIGH);
+    digitalWrite(INTLED3, LOW);
+    digitalWrite(INTLED4, LOW);
+    digitalWrite(INTLED5, LOW);
+    delay(wait);
+    digitalWrite(INTLED0, LOW);
+    digitalWrite(INTLED1, LOW);
+    digitalWrite(INTLED2, LOW);
     digitalWrite(INTLED3, HIGH);
     digitalWrite(INTLED4, LOW);
     digitalWrite(INTLED5, LOW);
@@ -106,57 +151,23 @@ void cycleLEDs(int n, int wait){
     digitalWrite(INTLED2, LOW);
     digitalWrite(INTLED3, LOW);
     digitalWrite(INTLED4, HIGH);
-    digitalWrite(INTLED5, HIGH);
+    digitalWrite(INTLED5, LOW);
     delay(wait);
     digitalWrite(INTLED0, LOW);
     digitalWrite(INTLED1, LOW);
     digitalWrite(INTLED2, LOW);
     digitalWrite(INTLED3, LOW);
     digitalWrite(INTLED4, LOW);
-    digitalWrite(INTLED5, LOW);
+    digitalWrite(INTLED5, HIGH);
+    delay(wait);
   }
 }
 
-void resetLEDs(){
-  digitalWrite(INTLED0, HIGH);
-  digitalWrite(INTLED1, HIGH);
-  digitalWrite(INTLED2, HIGH);
-  digitalWrite(INTLED3, HIGH);
-  digitalWrite(INTLED4, HIGH);
-  digitalWrite(INTLED5, HIGH);
-}
-
-void drawBarGraph( int inputVar ){
-  //int increment = (200 / 7);
-  int increment = (baseLuxReading / 7);
-  if ( inputVar > (increment * 1) ) {
-    digitalWrite(INTLED0, 1);
-  } else {
-    digitalWrite(INTLED0, 0);
-  }
-  if ( inputVar > (increment * 2) ) {
-    digitalWrite(INTLED1, 1);
-  } else {
-    digitalWrite(INTLED1, 0);
-  }
-  if ( inputVar > (increment * 3) ) {
-    digitalWrite(INTLED2, 1);
-  } else {
-    digitalWrite(INTLED2, 0);
-  }
-  if ( inputVar > (increment * 4) ) {
-    digitalWrite(INTLED3, 1);
-  } else {
-    digitalWrite(INTLED3, 0);
-  }
-  if ( inputVar > (increment * 5) ) {
-    digitalWrite(INTLED4, 1);
-  } else {
-    digitalWrite(INTLED4, 0);
-  }
-  if ( inputVar > (increment * 6) ) {
-    digitalWrite(INTLED5, 1);
-  } else {
-    digitalWrite(INTLED5, 0);
-  }
+void setAllLEDs(int value){
+  digitalWrite(INTLED0, value);
+  digitalWrite(INTLED1, value);
+  digitalWrite(INTLED2, value);
+  digitalWrite(INTLED3, value);
+  digitalWrite(INTLED4, value);
+  digitalWrite(INTLED5, value);
 }
