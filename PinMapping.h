@@ -1,29 +1,15 @@
-#define INTLED0 7 // Pin 15
-#define INTLED1 23 // Pin 16
-#define INTLED2 22 // Pin 17
-#define INTLED3 20 // Pin 18
-#define INTLED4 1 // Pin 19
-#define INTLED5 0 // Pin 20
+#define INTLEDR 12  // red channel
+#define INTLEDG 13  // green channel
+#define INTLEDB 14  // blue channel
 
-#define INTLEDR 10 // Pin 12
-#define INTLEDG 5 // Pin 13
-#define INTLEDB 13 // Pin 14
+#define INTLED0 15  // Left most
+#define INTLED1 16  //
+#define INTLED2 17  //
+#define INTLED3 18  //
+#define INTLED4 19  //
+#define INTLED5 20  // Right most
 
-#define LUXPIN 24 // Pin A2
-#define BTNPIN 
+#define RX 4 // Pins 6 and 8 are also valid
+#define TX 5 // Pins 2,3,4,6,7,8,9,10,11 are also valid
 
-#define RX 8  
-#define TX 19
-
-#define SDA11 3 // Also an interrupt Pin?
-#define SCL10 2 // Also an interrupt Pin?
-
-#define A7 6 
-#define A4 8 
-#define A8 9 
-#define A6 11 
-
-#define A9 19 
-#define A5 21 
-#define A2 24 
-#define A7 25 
+#define LUXPIN A2
