@@ -13,7 +13,6 @@ void setup(){
   // setting of your XBee.
   XBee.begin(9600);
   Serial.begin(9600);
-  pinMode(24, OUTPUT);
   pinMode(INTLEDG, OUTPUT);
   pinMode(INTLED0, OUTPUT);
   pinMode(INTLED1, OUTPUT);
