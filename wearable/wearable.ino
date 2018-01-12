@@ -1,21 +1,5 @@
 #include <SoftwareSerial.h>
-
-#define INTLEDR 12  // red channel
-#define INTLEDG 13  // green channel
-#define INTLEDB 14  // blue channel
-
-//White bar-graph LEDs
-#define INTLED0 15  // Left most
-#define INTLED1 16  //
-#define INTLED2 17  //
-#define INTLED3 18  //
-#define INTLED4 19  //
-#define INTLED5 20  // Right most
-
-#define LUXPIN A2
-
-#define RX 4 //
-#define TX 11
+#include "PinMapping.h"
 
 // XBee's DOUT (TX) is connected to pin 10 (Arduino's Software RX)
 // XBee's DIN (RX) is connected to pin 11 (Arduino's Software TX)
