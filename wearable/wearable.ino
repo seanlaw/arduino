@@ -43,19 +43,6 @@ void loop(){
     setAllLEDs(HIGH);
   }
   checkWaves(0.5, true);
-  /*
-  if (Serial.available())
-  { // If data comes in from serial monitor, send it out to XBee
-    XBee.write(Serial.read());
-  }
-  if (XBee.available())
-  { // If data comes in from XBee, send it out to serial monitor
-    Serial.write(XBee.read());
-
-    
-    blink(3);
-  }
-  */
 }
 
 void blink(int n){
@@ -90,84 +77,35 @@ void checkWaves(float lightPercentage, bool reset){
 }
 
 void bounceLEDs(int n, int wait){
+  int arrayLEDs[6];
   for (int i=0; i< n; i++){
-    digitalWrite(INTLED0, LOW);
-    digitalWrite(INTLED1, LOW);
-    digitalWrite(INTLED2, LOW);
-    digitalWrite(INTLED3, LOW);
-    digitalWrite(INTLED4, LOW);
-    digitalWrite(INTLED5, HIGH);
-    delay(wait);
-    digitalWrite(INTLED0, LOW);
-    digitalWrite(INTLED1, LOW);
-    digitalWrite(INTLED2, LOW);
-    digitalWrite(INTLED3, LOW);
-    digitalWrite(INTLED4, HIGH);
-    digitalWrite(INTLED5, LOW);
-    delay(wait);
-    digitalWrite(INTLED0, LOW);
-    digitalWrite(INTLED1, LOW);
-    digitalWrite(INTLED2, LOW);
-    digitalWrite(INTLED3, HIGH);
-    digitalWrite(INTLED4, LOW);
-    digitalWrite(INTLED5, LOW);
-    delay(wait);
-    digitalWrite(INTLED0, LOW);
-    digitalWrite(INTLED1, LOW);
-    digitalWrite(INTLED2, HIGH);
-    digitalWrite(INTLED3, LOW);
-    digitalWrite(INTLED4, LOW);
-    digitalWrite(INTLED5, LOW);
-    delay(wait);
-    digitalWrite(INTLED0, LOW);
-    digitalWrite(INTLED1, HIGH);
-    digitalWrite(INTLED2, LOW);
-    digitalWrite(INTLED3, LOW);
-    digitalWrite(INTLED4, LOW);
-    digitalWrite(INTLED5, LOW);
-    delay(wait);
-    digitalWrite(INTLED0, HIGH);
-    digitalWrite(INTLED1, LOW);
-    digitalWrite(INTLED2, LOW);
-    digitalWrite(INTLED3, LOW);
-    digitalWrite(INTLED4, LOW);
-    digitalWrite(INTLED5, LOW);
-    delay(wait);
-    digitalWrite(INTLED0, LOW);
-    digitalWrite(INTLED1, HIGH);
-    digitalWrite(INTLED2, LOW);
-    digitalWrite(INTLED3, LOW);
-    digitalWrite(INTLED4, LOW);
-    digitalWrite(INTLED5, LOW);
-    delay(wait);
-    digitalWrite(INTLED0, LOW);
-    digitalWrite(INTLED1, LOW);
-    digitalWrite(INTLED2, HIGH);
-    digitalWrite(INTLED3, LOW);
-    digitalWrite(INTLED4, LOW);
-    digitalWrite(INTLED5, LOW);
-    delay(wait);
-    digitalWrite(INTLED0, LOW);
-    digitalWrite(INTLED1, LOW);
-    digitalWrite(INTLED2, LOW);
-    digitalWrite(INTLED3, HIGH);
-    digitalWrite(INTLED4, LOW);
-    digitalWrite(INTLED5, LOW);
-    delay(wait);
-    digitalWrite(INTLED0, LOW);
-    digitalWrite(INTLED1, LOW);
-    digitalWrite(INTLED2, LOW);
-    digitalWrite(INTLED3, LOW);
-    digitalWrite(INTLED4, HIGH);
-    digitalWrite(INTLED5, LOW);
-    delay(wait);
-    digitalWrite(INTLED0, LOW);
-    digitalWrite(INTLED1, LOW);
-    digitalWrite(INTLED2, LOW);
-    digitalWrite(INTLED3, LOW);
-    digitalWrite(INTLED4, LOW);
-    digitalWrite(INTLED5, HIGH);
-    delay(wait);
+    for (int j=5; j>=0; j--){
+      for(int k=0; k< 6; k++){
+        arrayLEDs[k] = LOW;
+      }
+      arrayLEDs[j] = HIGH;
+      digitalWrite(INTLED0, arrayLEDs[0]);
+      digitalWrite(INTLED1, arrayLEDs[1]);
+      digitalWrite(INTLED2, arrayLEDs[2]);
+      digitalWrite(INTLED3, arrayLEDs[3]);
+      digitalWrite(INTLED4, arrayLEDs[4]);
+      digitalWrite(INTLED5, arrayLEDs[5]);
+      delay(wait);
+    }
+    for (int j=0; j< 6; j++){
+      for(int k=0; k< 6; k++){
+        arrayLEDs[k] = LOW;
+      }
+      arrayLEDs[j] = HIGH;
+      digitalWrite(INTLED0, arrayLEDs[0]);
+      digitalWrite(INTLED1, arrayLEDs[1]);
+      digitalWrite(INTLED2, arrayLEDs[2]);
+      digitalWrite(INTLED3, arrayLEDs[3]);
+      digitalWrite(INTLED4, arrayLEDs[4]);
+      digitalWrite(INTLED5, arrayLEDs[5]);
+      delay(wait);
+    }
+
   }
 }
 
