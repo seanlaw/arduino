@@ -1,6 +1,11 @@
 #include <SoftwareSerial.h>
 #include "PinMapping.h"
 
+struct WaveState {
+  unsigned long firstWaveTime;
+  unsigned long firstPauseTime;
+};
+
 // XBee's DOUT (TX) is connected to pin 10 (Arduino's Software RX)
 // XBee's DIN (RX) is connected to pin 11 (Arduino's Software TX)
 SoftwareSerial XBee(RX, TX); // RX, TX
@@ -9,6 +14,7 @@ float baseLuxReading;
 int waveCount;
 int intLEDs[] = {INTLED0, INTLED1, INTLED2, INTLED3, INTLED4, INTLED5};
 int intLEDSize = sizeof( intLEDs ) / sizeof( int );
+WaveState waveState = {0, 0};
 
 void setup(){
   // Set up both ports at 9600 baud. This value is most important
@@ -35,7 +41,8 @@ void loop(){
     }
     bounceBlink();
   }
-  checkWaves(0.5, true);
+  //checkWaves(0.6, true);
+  checkWaves2(0.6, true);
 }
 
 void blink(int n){
@@ -64,6 +71,30 @@ void checkWaves(float lightPercentage, bool reset){
     else{
       waveCount++;
     }
+  }
+}
+
+void checkWaves2(float lightPercentage, bool reset){
+  float luxReading = analogRead(LUXPIN);
+  unsigned long elapsedTime;
+  
+  if (luxReading <= lightPercentage*baseLuxReading){
+    if (waveState.firstWaveTime == 0){
+      waveState.firstWaveTime = millis();
+    }
+    if (waveState.firstPauseTime > 0){
+      waveState.firstWaveTime = millis();
+      elapsedTime = waveState.firstWaveTime - waveState.firstPauseTime;
+      if (elapsedTime < 2000){
+        XBee.write("T");
+        bounceBlink();
+      }
+      waveState.firstWaveTime = 0;
+      waveState.firstPauseTime = 0;
+    }
+  }
+  if (waveState.firstWaveTime > 0 && waveState.firstPauseTime == 0 && luxReading >= 0.85*baseLuxReading){
+    waveState.firstPauseTime = millis();  
   }
 }
 
