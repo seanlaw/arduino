@@ -24,6 +24,7 @@ void setup(){
   Serial.begin(9600);
 
   pinMode(INTLEDG, OUTPUT);
+  pinMode(INTLEDR, OUTPUT);
 
   for (int i=0; i< intLEDSize; i++){
     pinMode(intLEDs[i], OUTPUT);
@@ -41,51 +42,33 @@ void loop(){
     }
     bounceBlink();
   }
-  //checkWaves(0.6, true);
-  checkWaves2(0.6, true);
+  checkWaves(0.65, true);
 }
 
-void blink(int n){
+void blink(int ledPin, int n, int sleep){
   for (int i=0; i<n; i++){
-    digitalWrite(INTLEDG, HIGH);
+    digitalWrite(ledPin, HIGH);
     setAllLEDs(HIGH);
-    delay(200);
-    digitalWrite(INTLEDG, LOW);
+    delay(sleep);
+    digitalWrite(ledPin, LOW);
     setAllLEDs(LOW);
-    delay(200);
+    delay(sleep);
   }
 }
 
 void checkWaves(float lightPercentage, bool reset){
   float luxReading = analogRead(LUXPIN);
-  if (luxReading <= lightPercentage*baseLuxReading){
-    waveCount++;
-    delay(400);
-  }
-  if (waveCount == 2){
-    XBee.write("T");
-    bounceBlink();
-    if (reset == true){
-      waveCount=0;
-    }
-    else{
-      waveCount++;
-    }
-  }
-}
-
-void checkWaves2(float lightPercentage, bool reset){
-  float luxReading = analogRead(LUXPIN);
   unsigned long elapsedTime;
   
   if (luxReading <= lightPercentage*baseLuxReading){
+    drawBarGraph(luxReading);
     if (waveState.firstWaveTime == 0){
       waveState.firstWaveTime = millis();
     }
     if (waveState.firstPauseTime > 0){
       waveState.firstWaveTime = millis();
       elapsedTime = waveState.firstWaveTime - waveState.firstPauseTime;
-      if (elapsedTime < 2000){
+      if (elapsedTime < 1000){
         XBee.write("T");
         bounceBlink();
       }
@@ -94,13 +77,14 @@ void checkWaves2(float lightPercentage, bool reset){
     }
   }
   if (waveState.firstWaveTime > 0 && waveState.firstPauseTime == 0 && luxReading >= 0.85*baseLuxReading){
-    waveState.firstPauseTime = millis();  
+    waveState.firstPauseTime = millis();
+    setAllLEDs(HIGH);
   }
 }
 
 void bounceBlink(){
   bounceLEDs(4, 50);
-  blink(4);
+  blink(INTLEDG, 4, 200);
   setAllLEDs(HIGH);
   delay(1000);
 }
@@ -126,4 +110,39 @@ void setAllLEDs(int value){
   for (int i=0; i< intLEDSize; i++){
     digitalWrite(intLEDs[i], value);
   }
+}
+
+void drawBarGraph( int inputVar ){
+  int increment = (int(baseLuxReading) / 7);
+  if ( inputVar > (increment * 1) ) {
+    digitalWrite(INTLED0, 1);
+  } else {
+    digitalWrite(INTLED0, 0);
+  }
+  if ( inputVar > (increment * 2) ) {
+    digitalWrite(INTLED1, 1);
+  } else {
+    digitalWrite(INTLED1, 0);
+  }
+  if ( inputVar > (increment * 3) ) {
+    digitalWrite(INTLED2, 1);
+  } else {
+    digitalWrite(INTLED2, 0);
+  }
+  if ( inputVar > (increment * 4) ) {
+    digitalWrite(INTLED3, 1);
+  } else {
+    digitalWrite(INTLED3, 0);
+  }
+  if ( inputVar > (increment * 5) ) {
+    digitalWrite(INTLED4, 1);
+  } else {
+    digitalWrite(INTLED4, 0);
+  }
+  if ( inputVar > (increment * 6) ) {
+    digitalWrite(INTLED5, 1);
+  } else {
+    digitalWrite(INTLED5, 0);
+  }
+
 }
