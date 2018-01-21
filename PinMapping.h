@@ -13,3 +13,5 @@
 #define TX 5 // Pins 2,3,4,6,7,8,9,10,11 are also valid
 
 #define LUXPIN A2
+#define BTNPIN A8
+
