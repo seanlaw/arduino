@@ -8,6 +8,15 @@ SoftwareSerial XBee(RX, TX); // RX, TX
 int intLEDs[] = {INTLED0, INTLED1, INTLED2, INTLED3, INTLED4, INTLED5};
 int intLEDSize = sizeof( intLEDs ) / sizeof( int );
 
+struct SIGNAL {
+  bool t;
+  bool d;
+  bool a;
+  unsigned long lastTime;
+};
+
+SIGNAL signal = {false, false, false, 0};
+
 void setup(){
   // Set up both ports at 9600 baud. This value is most important
   // for the XBee. Make sure the baud rate matches the config
@@ -26,14 +35,7 @@ void setup(){
 }
 
 void loop(){
-  if (XBee.available()){
-    while(XBee.available()){
-      char c = XBee.read();
-    }
-    bounceBlink();
-  }
-  if ( digitalRead( BTNPIN ) == 0 ){
-    XBee.write("T");
+  if (signalReceived() || buttonPressed()){
     bounceBlink();
   }
 }
@@ -77,3 +79,53 @@ void setAllLEDs(int value){
     digitalWrite(intLEDs[i], value);
   }
 }
+
+bool buttonPressed(){
+  // Return true is button is pressed
+  // and sends signal through XBee
+  if ( digitalRead( BTNPIN ) == 0 ){
+    XBee.write('T');
+    XBee.write('D');
+    XBee.write('A');
+    return true;
+  }
+  
+  return false;
+}
+
+bool signalReceived(){
+  if (XBee.available()){
+    char c = XBee.read();
+    switch (c){
+      case 'T':
+        signal.t = true;
+        signal.lastTime = millis();
+        break;
+      case 'D':
+        signal.d = true;
+        signal.lastTime = millis();
+        break;
+      case 'A':
+        signal.a = true;
+        signal.lastTime = millis();
+        break;   
+    }
+  }
+
+  // Ensure that "TDA" signal is received 
+  if (signal.t && signal.d && signal.a){
+    signal = {false, false, false, 0};
+    return true;
+  }
+
+  // Ensure that "TDA" signal is received in one second
+  // Otherwise, reset signal
+  if (signal.t || signal.d || signal.a){
+    if ((millis() - signal.lastTime) > 1000){
+      signal = {false, false, false, 0};
+    }
+  }
+  
+  return false;
+}
+
